@@ -12,13 +12,8 @@
             <div class="bg-white shadow-sm sm:rounded-lg p-6">
                 <form method="POST" action="{{ route('posts.store') }}">
                     @csrf
-                    <textarea
-                        name="content"
-                        rows="3"
-                        maxlength="140"
-                        placeholder="いまどうしてる？（140文字以内）"
-                        class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                    >{{ old('content') }}</textarea>
+                    <textarea name="content" rows="3" maxlength="140" placeholder="いまどうしてる？（140文字以内）"
+                        class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">{{ old('content') }}</textarea>
 
                     {{-- バリデーションエラー表示 --}}
                     @error('content')
@@ -26,7 +21,8 @@
                     @enderror
 
                     <div class="mt-3 text-right">
-                        <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600">
+                        <button type="submit"
+                            class="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600">
                             投稿する
                         </button>
                     </div>
@@ -54,6 +50,26 @@
                         @endif
                     </div>
                     <p class="mt-2 text-gray-700">{{ $post->content }}</p>
+
+                    {{-- いいねボタン --}}
+                    <div class="mt-3 flex justify-end">
+                        @if ($post->isLikedBy(Auth::user()))
+                            <form method="POST" action="{{ route('likes.destroy', $post) }}">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-500 text-sm hover:text-red-700">
+                                    ❤ {{ $post->likes_count }}
+                                </button>
+                            </form>
+                        @else
+                            <form method="POST" action="{{ route('likes.store', $post) }}">
+                                @csrf
+                                <button type="submit" class="text-gray-400 text-sm hover:text-red-500">
+                                    ♡ {{ $post->likes_count }}
+                                </button>
+                            </form>
+                        @endif
+                    </div>
                 </div>
             @endforeach
 

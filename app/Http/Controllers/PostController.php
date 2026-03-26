@@ -13,7 +13,7 @@ class PostController extends Controller
     // 投稿一覧を表示
     public function index()
     {
-        $posts = Post::with('user')->latest()->get();
+        $posts = Post::with('user')->withCount('likes')->latest()->get();
         return view('posts.index', compact('posts'));
     }
 
