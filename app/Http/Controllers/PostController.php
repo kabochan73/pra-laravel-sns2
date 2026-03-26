@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePostRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -17,12 +18,8 @@ class PostController extends Controller
     }
 
     // 投稿を保存
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-        $request->validate([
-            'content' => 'required|max:140',
-        ]);
-
         $request->user()->posts()->create([
             'content' => $request->content,
         ]);
