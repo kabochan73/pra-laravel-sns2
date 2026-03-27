@@ -34,7 +34,8 @@
                 <div class="bg-white shadow-sm sm:rounded-lg p-6">
                     <div class="flex justify-between items-start">
                         <div>
-                            <a href="{{ route('users.show', $post->user) }}" class="font-bold text-gray-800 hover:underline">{{ $post->user->name }}</a>
+                            <a href="{{ route('users.show', $post->user) }}"
+                                class="font-bold text-gray-800 hover:underline">{{ $post->user->name }}</a>
                             <span class="text-gray-400 text-sm ml-2">{{ $post->created_at->diffForHumans() }}</span>
                         </div>
 
@@ -43,7 +44,8 @@
                             <form method="POST" action="{{ route('posts.destroy', $post) }}">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="text-red-400 text-sm hover:text-red-600">
+                                <button type="submit"
+                                    class="text-red-400 text-sm hover:text-red-600 border border-red-400 px-2 py-1 rounded">
                                     削除
                                 </button>
                             </form>

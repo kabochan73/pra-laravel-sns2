@@ -7,9 +7,10 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function show(User $user)
+    public function show(Request $request, User $user)
     {
         $posts = $user->posts()->withCount('likes')->latest()->get();
-        return view('users.show', compact('user', 'posts'));
+        $isFollowing = $request->user()->isFollowing($user);
+        return view('users.show', compact('user', 'posts', 'isFollowing'));
     }
 }
