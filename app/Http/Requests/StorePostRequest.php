@@ -24,6 +24,7 @@ class StorePostRequest extends FormRequest
     {
         return [
             'content' => 'required|max:140',
+            'image'   => 'nullable|image|max:2048',
         ];
     }
 }

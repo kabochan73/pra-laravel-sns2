@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePostRequest;
 use App\Models\Post;
-use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -20,8 +20,13 @@ class PostController extends Controller
     // 投稿を保存
     public function store(StorePostRequest $request)
     {
+        $imagePath = $request->hasFile('image')
+            ? $request->file('image')->store('post_images', 'public')
+            : null;
+
         $request->user()->posts()->create([
             'content' => $request->content,
+            'image'   => $imagePath,
         ]);
 
         return redirect()->route('posts.index');
@@ -31,6 +36,11 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $this->authorize('delete', $post);
+
+        if ($post->image) {
+            Storage::disk('public')->delete($post->image);
+        }
+
         $post->delete();
         return redirect()->route('posts.index');
     }
