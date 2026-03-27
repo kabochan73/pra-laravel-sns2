@@ -1,9 +1,10 @@
+@use('Illuminate\Support\Facades\Storage')
 <x-app-layout>
-    <x-slot name="header">
+    {{-- <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ $user->name }}
         </h2>
-    </x-slot>
+    </x-slot> --}}
 
     <div class="py-12">
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8 space-y-6">
@@ -41,6 +42,11 @@
                 </div>
             </div>
 
+            {{-- 投稿フォーム（自分のプロフィールのみ） --}}
+            @if (Auth::id() === $user->id)
+                <x-post-form />
+            @endif
+
             {{-- 投稿一覧 --}}
             @foreach ($posts as $post)
                 <div class="bg-white shadow-sm sm:rounded-lg p-6">
@@ -56,6 +62,12 @@
                         @endif
                     </div>
                     <p class="mt-2 text-gray-700">{{ $post->content }}</p>
+
+                    @if ($post->image)
+                        <img src="{{ Storage::url($post->image) }}" alt="投稿画像"
+                            class="mt-3 rounded-lg max-h-80 w-full object-cover">
+                    @endif
+
                     <div class="mt-3 flex justify-end">
                         @if ($post->isLikedBy(Auth::user()))
                             <form method="POST" action="{{ route('likes.destroy', $post) }}">
