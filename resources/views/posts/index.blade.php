@@ -1,16 +1,21 @@
 @use('Illuminate\Support\Facades\Storage')
 <x-app-layout>
-    <x-slot name="header">
+    {{-- <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             投稿一覧
         </h2>
-    </x-slot>
+    </x-slot> --}}
 
     <div class="py-12">
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
             {{-- 投稿フォーム --}}
-            <x-post-form />
+            {{-- <x-post-form /> --}}
+
+            {{-- 検索結果件数 --}}
+            @if ($keyword)
+                <p class="text-sm text-gray-500">「{{ $keyword }}」の検索結果: {{ $posts->count() }}件</p>
+            @endif
 
             {{-- 投稿一覧 --}}
             @foreach ($posts as $post)

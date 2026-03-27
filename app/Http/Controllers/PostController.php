@@ -5,16 +5,24 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePostRequest;
 use App\Models\Post;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
     use AuthorizesRequests;
     // 投稿一覧を表示
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::with('user')->withCount('likes')->latest()->get();
-        return view('posts.index', compact('posts'));
+        $keyword = $request->input('keyword');
+
+        $posts = Post::with('user')
+            ->withCount('likes')
+            ->when($keyword, fn($q) => $q->where('content', 'like', "%{$keyword}%"))
+            ->latest()
+            ->get();
+
+        return view('posts.index', compact('posts', 'keyword'));
     }
 
     // 投稿を保存
