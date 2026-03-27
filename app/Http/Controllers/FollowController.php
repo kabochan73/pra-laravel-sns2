@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Notifications\FollowedNotification;
 use Illuminate\Http\Request;
 
 class FollowController extends Controller
@@ -11,6 +12,7 @@ class FollowController extends Controller
     public function store(Request $request, User $user)
     {
         $request->user()->following()->attach($user->id);
+        $user->notify(new FollowedNotification($request->user()));
         return back();
     }
 

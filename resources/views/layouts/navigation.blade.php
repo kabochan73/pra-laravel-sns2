@@ -15,6 +15,16 @@
                     <x-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.*')">
                         投稿一覧
                     </x-nav-link>
+                    <x-nav-link :href="route('notifications.index')" :active="request()->routeIs('notifications.*')">
+                        <span class="relative">
+                            通知
+                            @if (Auth::user()->unreadNotifications()->count() > 0)
+                                <span class="absolute -top-1 -right-3 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                                    {{ Auth::user()->unreadNotifications()->count() }}
+                                </span>
+                            @endif
+                        </span>
+                    </x-nav-link>
                 </div>
             </div>
 
